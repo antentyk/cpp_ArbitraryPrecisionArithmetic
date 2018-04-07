@@ -20,9 +20,9 @@ namespace ArbitraryPrecisionArithmetic{
         std::string getRepresentation() const;
     private:
         static const unsigned long long kBaseDegree = 8;
-        static const unsigned int kRepresentationBase = 1e8;
+        static const unsigned int kBase = 1e8;
 
-        static const unsigned int kSourceBase = 10;
+        static const unsigned int kRepresentationBase = 10;
 
         std::vector<unsigned long long> reversedDigits;
         bool isPositive;

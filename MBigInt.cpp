@@ -65,7 +65,7 @@ MBigInt::MBigInt(string representation){
 
         current_number += current_power * digit;
 
-        current_power *= kSourceBase;
+        current_power *= kRepresentationBase;
         ++currently_taken;
 
         if(currently_taken == kBaseDegree){
