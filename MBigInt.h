@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <ostream>
+#include <sstream>
 #include <algorithm>
 
 #include "Exceptions.h"
@@ -40,6 +41,8 @@ namespace ArbitraryPrecisionArithmetic{
             return reversedDigits_;
         }
 
+        operator std::string() const;
+
     private:
         inline bool isZero() const{
             return reversedDigits_.size() == 1 && reversedDigits_.at(0) == 0;
@@ -55,7 +58,9 @@ namespace ArbitraryPrecisionArithmetic{
         digitContainer reversedDigits_;
     };
 
-    std::ostream& operator<<(std::ostream &strm, const MBigInt &instance);
+    inline std::ostream& operator<<(std::ostream &strm, const MBigInt &instance){
+        return strm << static_cast<std::string>(instance);
+    }
 }
 
 #endif

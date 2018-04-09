@@ -4,6 +4,7 @@ using namespace ArbitraryPrecisionArithmetic;
 using std::string;
 using std::to_string;
 using std::ostream;
+using std::stringstream;
 
 namespace
 {
@@ -166,24 +167,21 @@ bool MBigInt::operator>(const MBigInt &rhs) const{
     throw ComparisonError();
 }
 
-ostream& ArbitraryPrecisionArithmetic::operator<<
-(
-    ostream &strm,
-    const MBigInt &instance
-)
-{
-    auto itr = instance.getReversedDigits().rbegin();
+MBigInt::operator string() const{
+    stringstream strm;
 
-    if(instance < 0)
+    if(operator<(0))
         strm << "-";
+    
+    auto itr = reversedDigits_.rbegin();
     strm << *(itr++);
 
-    for(;itr != instance.getReversedDigits().rend(); ++itr){
+    for(;itr != reversedDigits_.rend(); ++itr){
         for(int i = 0; i < MBigInt::kBaseDegree - digitsnum(*itr); ++i)
             strm << "0";
         
         strm << *itr;
     }
 
-    return strm;
+    return strm.str();
 }
