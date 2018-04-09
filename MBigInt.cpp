@@ -1,108 +1,189 @@
 #include "MBigInt.h"
 
 using namespace ArbitraryPrecisionArithmetic;
-using std::vector;
 using std::string;
-using std::stringstream;
+using std::to_string;
 using std::ostream;
 
-typedef unsigned long long ull;
-typedef unsigned int ui;
-
-MBigInt::MBigInt():
-    isPositive(true)
+namespace
 {
-    reversedDigits.clear();
-    reversedDigits.push_back(0);
-    fillRepresentation();
-}
+    int raw_cmp(const digitContainer &lhs, const digitContainer &rhs){
+        // -1 lhs < rhs
+        // 0 lhs == rhs
+        // 1 lhs > rhs
 
-MBigInt::MBigInt(const MBigInt &other):
-    reversedDigits(other.reversedDigits),
-    isPositive(other.isPositive),
-    representation(other.representation)
-{}
+        if(lhs.size() > rhs.size())
+            return 1;
+        if(lhs.size() < rhs.size())
+            return -1;
 
-MBigInt& MBigInt::operator=(const MBigInt &other){
-    if(&other == this)
-        return *this;
-    
-    reversedDigits = other.reversedDigits;
-    isPositive = other.isPositive;
-    representation = other.representation;
+        auto lhs_itr = lhs.rbegin(), rhs_itr = rhs.rbegin();
 
-    return *this;
+        for
+        (
+            ;
+            lhs_itr != lhs.rend() && rhs_itr != rhs.rend() && *lhs_itr == *rhs_itr;
+            ++lhs_itr, ++rhs_itr
+        );
+
+        if(lhs_itr == lhs.rend() && rhs_itr == rhs.rend())
+            return 0;
+        if(*lhs_itr < *rhs_itr)
+            return -1;
+        if(*lhs_itr > *rhs_itr)
+            return 1;
+        
+        throw ComparisonError();
+    }
+
+    int digitsnum(digit number){
+        if(number == 0)
+            return 1;
+        
+        int result = 0;
+        while(number > 0){
+            ++result;
+            number /= 10;
+        }
+
+        return result;
+    }
 }
 
 MBigInt::MBigInt(string representation){
-    isPositive = true;
+    sign_ = false;
 
     if(representation.size() == 0)
-        throw EmptyString();
-    
-    auto start = representation.rbegin();
-    auto end = representation.rend();
+        throw FormatError();
+
+    if(representation.at(0) == '-')
+        sign_ = true;
 
     if
     (
         representation.at(0) == '-' || 
         representation.at(0) == '+'
     )
-        --end;
+        representation = representation.substr(1);
     
-    if(representation.at(0) == '-')
-        isPositive=false;
+    auto start = representation.rbegin();
+    auto end = representation.rend();
+
+    if(representation.size() == 0)
+        throw FormatError();
     
-    ull currently_taken = 0;
-    ull current_number = 0;
-    ull current_power = 1;
+    if(representation == "0"){
+        reversedDigits_.push_back(0);
+        return;
+    }
+
+    if
+    (
+        representation.size() > 1 &&
+        representation.substr(0, 2) == "00"
+    )
+        throw FormatError();
+
+    digit
+        currently_taken = 0,
+        current_number = 0,
+        current_power = 1;
 
     for(; start != end; ++start){
         if(!isdigit(*start))
             throw InvalidCharacter();
         
-        ui digit = *start - '0';
+        digit current_digit = *start - '0';
 
-        current_number += current_power * digit;
+        current_number += current_power * current_digit;
 
         current_power *= kRepresentationBase;
         ++currently_taken;
 
         if(currently_taken == kBaseDegree){
-            reversedDigits.push_back(current_number);
-            current_power = 1;
+            reversedDigits_.push_back(current_number);
             currently_taken = 0;
             current_number = 0;
+            current_power = 1;
         }
     }
 
     if(current_number != 0)
-        reversedDigits.push_back(current_number);
-
-    fillRepresentation();
+        reversedDigits_.push_back(current_number);
 }
 
-void MBigInt::fillRepresentation(){
-    stringstream strm; 
+MBigInt::MBigInt(int number):
+MBigInt(to_string(number))
+{}
 
-    if(!isPositive)
-        strm << '-';
+MBigInt::MBigInt(const MBigInt &other):
+    sign_(other.sign_),
+    reversedDigits_(other.reversedDigits_)
+{}
+
+MBigInt& MBigInt::operator=(const MBigInt &rhs){
+    if(this == &rhs)
+        return *this;
+
+    sign_ = rhs.sign_;
+    reversedDigits_ = rhs.reversedDigits_;
+
+    return *this;
+}
+
+bool MBigInt::operator==(const MBigInt &rhs) const{
+    if(isZero() && rhs.isZero())
+        return true;
+    if(isZero() || rhs.isZero())
+        return false;
     
-    for(auto itr = reversedDigits.rbegin(); itr != reversedDigits.rend(); ++itr)
-        strm << *itr;
+    return
+        sign_ == rhs.sign_ &&
+        reversedDigits_ == rhs.reversedDigits_;
+}
+
+bool MBigInt::operator>(const MBigInt &rhs) const{
+    if(operator==(rhs))
+        return false;
     
-    representation = strm.str();
+    if(isZero())
+        return rhs.isNegative();
+    if(rhs.isZero())
+        return isPositive();
+    
+    if(isPositive() && rhs.isNegative())
+        return true;
+    if(isNegative() && rhs.isPositive())
+        return false;
+    
+    int result = raw_cmp(reversedDigits_, rhs.reversedDigits_);
+
+    if(isPositive())
+        return result == 1;
+    if(isNegative())
+        return result == -1;
+    
+    throw ComparisonError();
 }
 
-string MBigInt::getRepresentation() const{
-    return representation;
-}
-
-ostream& ArbitraryPrecisionArithmetic::operator<<(
+ostream& ArbitraryPrecisionArithmetic::operator<<
+(
     ostream &strm,
     const MBigInt &instance
 )
 {
-    strm << instance.getRepresentation();
+    auto itr = instance.getReversedDigits().rbegin();
+
+    if(instance < 0)
+        strm << "-";
+    strm << *(itr++);
+
+    for(;itr != instance.getReversedDigits().rend(); ++itr){
+        for(int i = 0; i < MBigInt::kBaseDegree - digitsnum(*itr); ++i)
+            strm << "0";
+        
+        strm << *itr;
+    }
+
     return strm;
 }

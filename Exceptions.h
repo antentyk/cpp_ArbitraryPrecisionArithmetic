@@ -11,11 +11,18 @@ namespace ArbitraryPrecisionArithmetic{
         }
     };
 
-    class EmptyString : public std::exception{
+    class ComparisonError : public std::exception{
     public:
         const char * what() const throw(){
-            return "Representation string is empty";
+            return "Error in comparison";
         }
+    };
+
+    class FormatError : public std::exception{
+    public:
+    const char * what() const throw(){
+        return "Wrong number format";
+    }
     };
 }
 

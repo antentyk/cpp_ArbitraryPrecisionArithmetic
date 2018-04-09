@@ -4,31 +4,55 @@
 #include <string>
 #include <vector>
 #include <ostream>
-#include <sstream>
+#include <algorithm>
 
 #include "Exceptions.h"
+
+typedef long long digit;
+typedef std::vector<digit> digitContainer;
 
 namespace ArbitraryPrecisionArithmetic{
     class MBigInt{
     public:
-        MBigInt();
-        MBigInt(std::string representation);
+        static const digit kBaseDegree = 8;
+        static const digit kBase = 1e8;
+        static const digit kRepresentationBase = 10;
+
+        explicit MBigInt(std::string representation);
+        MBigInt(int number);
         MBigInt(const MBigInt &other);
 
-        MBigInt& operator=(const MBigInt &other);
+        MBigInt& operator=(const MBigInt &rhs);
 
-        std::string getRepresentation() const;
+        bool operator==(const MBigInt &rhs) const;
+        bool operator>(const MBigInt &rhs) const;
+        inline bool operator>=(const MBigInt &rhs) const{
+            return operator==(rhs) || operator>(rhs);
+        }
+        inline bool operator<(const MBigInt &rhs) const{
+            return !operator==(rhs) && !operator>(rhs);
+        }
+        inline bool operator<=(const MBigInt &rhs) const{
+            return !operator>(rhs);
+        }
+
+        inline const digitContainer& getReversedDigits() const{
+            return reversedDigits_;
+        }
+
     private:
-        static const unsigned long long kBaseDegree = 8;
-        static const unsigned int kBase = 1e8;
+        inline bool isZero() const{
+            return reversedDigits_.size() == 1 && reversedDigits_.at(0) == 0;
+        }
+        inline bool isPositive() const{
+            return !sign_;
+        }
+        inline bool isNegative() const{
+            return sign_;
+        }
 
-        static const unsigned int kRepresentationBase = 10;
-
-        std::vector<unsigned long long> reversedDigits;
-        bool isPositive;
-
-        std::string representation;
-        void fillRepresentation();
+        bool sign_; // 0 - positive, 1 - negative
+        digitContainer reversedDigits_;
     };
 
     std::ostream& operator<<(std::ostream &strm, const MBigInt &instance);
