@@ -43,6 +43,10 @@ namespace ArbitraryPrecisionArithmetic{
 
         MBigInt& operator+=(const MBigInt &rhs);
         MBigInt& operator-=(const MBigInt &rhs);
+        inline MBigInt& operator*=(const MBigInt &rhs){
+            return operator=(operator*(rhs));
+        }
+
 
         inline const digitContainer& getReversedDigits() const{
             return reversedDigits_;
@@ -60,6 +64,7 @@ namespace ArbitraryPrecisionArithmetic{
             result -= rhs;
             return result;
         }
+        MBigInt operator*(const MBigInt &rhs) const;
 
     private:
         MBigInt(bool sign, digitContainer reversedDigits);

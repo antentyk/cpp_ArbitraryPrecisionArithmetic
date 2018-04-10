@@ -380,3 +380,34 @@ MBigInt::MBigInt(bool sign, digitContainer reversedDigits):
     
     reversedDigits_ = reversedDigits;
 }
+
+MBigInt MBigInt::operator*(const MBigInt &rhs) const{
+    MBigInt result = 0;
+
+    size_t shift = 0;
+
+    for(auto lhs_digit: reversedDigits_){
+        digitContainer tmpContainer;
+
+        for(size_t i = 0; i < shift; ++i)
+            tmpContainer.push_back(0);
+        ++shift;
+        
+        digit memory = 0;
+        digit current = 0;
+
+        for(auto rhs_digit: rhs.getReversedDigits()){
+            current = memory + rhs_digit * lhs_digit;
+            tmpContainer.push_back(current % kBase);
+            memory = current / kBase;
+        }
+
+        if(memory > 0)
+            tmpContainer.push_back(memory);
+        
+        result += MBigInt(false, tmpContainer);
+    }
+
+    result.sign_ = sign_ ^ rhs.sign_;
+    return result;
+}
