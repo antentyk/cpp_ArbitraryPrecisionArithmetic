@@ -10,5 +10,4 @@ using std::endl;
 using std::string;
 
 int main(){
-
 }

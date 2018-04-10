@@ -50,7 +50,20 @@ namespace ArbitraryPrecisionArithmetic{
 
         operator std::string() const;
 
+        inline MBigInt operator+(const MBigInt &rhs) const{
+            MBigInt result(*this);
+            result += rhs;
+            return result;
+        }
+        inline MBigInt operator-(const MBigInt &rhs) const{
+            MBigInt result(*this);
+            result -= rhs;
+            return result;
+        }
+
     private:
+        MBigInt(bool sign, digitContainer reversedDigits);
+
         inline bool isZero() const{
             return reversedDigits_.size() == 1 && reversedDigits_.at(0) == 0;
         }

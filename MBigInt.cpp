@@ -180,7 +180,7 @@ namespace
             target.push_back(current);
         }
 
-        while(target.size() > 1 && target.at(target.size() - 1) == 0)
+        while(target.size() > 1 && target.back() == 0)
             target.pop_back();
     }
 }
@@ -370,4 +370,13 @@ MBigInt::operator string() const{
     }
 
     return strm.str();
+}
+
+MBigInt::MBigInt(bool sign, digitContainer reversedDigits):
+    sign_(sign)
+{
+    while(reversedDigits.size() > 1 && reversedDigits.back() == 0)
+        reversedDigits.pop_back();
+    
+    reversedDigits_ = reversedDigits;
 }
