@@ -49,6 +49,140 @@ namespace
 
         return result;
     }
+
+    void raw_add
+    (
+        const digitContainer &lhs,
+        const digitContainer &rhs,
+        digitContainer &target
+    )
+    {
+        digit memory = 0;
+
+        size_t
+            index = 0,
+            lhs_index = 0,
+            rhs_index = 0;
+        
+        while
+        (
+            index < target.size() &&
+            lhs_index < lhs.size() &&
+            rhs_index < rhs.size()
+        )
+        {
+            digit current = lhs.at(lhs_index++) + rhs.at(rhs_index++) + memory;
+            target.at(index++) = current % MBigInt::kBase;
+            memory = current / MBigInt::kBase;
+        }
+
+        while(index < target.size() && lhs_index < lhs.size()){
+            digit current = lhs.at(lhs_index++) + memory;
+            target.at(index++) = current % MBigInt::kBase;
+            memory = current / MBigInt::kBase;
+        }
+
+        while(index < target.size() && rhs_index < rhs.size()){
+            digit current = rhs.at(rhs_index++) + memory;
+            target.at(index++) = current % MBigInt::kBase;
+            memory = current / MBigInt::kBase;
+        }
+
+        while
+        (
+            lhs_index < lhs.size() &&
+            rhs_index < rhs.size()
+        )
+        {
+            digit current = lhs.at(lhs_index++) + rhs.at(rhs_index++) + memory;
+            target.push_back(current % MBigInt::kBase);
+            memory = current / MBigInt::kBase;
+        }
+
+        while(lhs_index < lhs.size()){
+            digit current = lhs.at(lhs_index++) + memory;
+            target.push_back(current % MBigInt::kBase);
+            memory = current / MBigInt::kBase;
+        }
+
+        while(rhs_index < rhs.size()){
+            digit current = rhs.at(rhs_index++) + memory;
+            target.push_back(current % MBigInt::kBase);
+            memory = current / MBigInt::kBase;
+        }
+
+        if(memory != 0)
+            target.push_back(memory);
+    }
+
+    void raw_subtract
+    (
+        const digitContainer &lhs,
+        const digitContainer &rhs,
+        digitContainer &target
+    )
+    {
+        // digit represented by lhs should be greater than
+        // in rhs
+        // otherwise the behaviour is underfined
+
+        bool carriage = false;
+
+        size_t
+            index = 0,
+            lhs_index = 0,
+            rhs_index = 0;
+        
+        while
+        (
+            index < target.size() &&
+            lhs_index < lhs.size() &&
+            rhs_index < rhs.size()
+        )
+        {
+            digit current = lhs.at(lhs_index++) - carriage - rhs.at(rhs_index++);
+            carriage = current < 0;
+            if(current < 0)
+                current += MBigInt::kBase;
+            
+            target.at(index++) = current;
+        }
+
+        while
+        (
+            index < target.size() &&
+            lhs_index < lhs.size()
+        )
+        {
+            digit current = lhs.at(lhs_index++) - carriage;
+            carriage = current < 0;
+            if(current < 0)
+                current += MBigInt::kBase;
+            
+            target.at(index++) = current;
+        }
+
+        while(lhs_index < lhs.size() && rhs_index < rhs.size()){
+            digit current = lhs.at(lhs_index++) - carriage - rhs.at(rhs_index++);
+            carriage = current < 0;
+            if(current < 0)
+                current += MBigInt::kBase;
+            
+            target.push_back(current);
+        }
+
+        while(lhs_index < lhs.size()){
+            digit current = lhs.at(lhs_index++) - carriage;
+            carriage = current < 0;
+            if(current < 0)
+                current += MBigInt::kBase;
+            
+            target.push_back(current);
+        }
+
+        while(target.size() > 1 && target.at(target.size() - 1) == 0)
+            target.pop_back();
+    }
 }
 
 MBigInt::MBigInt(string representation){
@@ -165,6 +299,58 @@ bool MBigInt::operator>(const MBigInt &rhs) const{
         return result == -1;
     
     throw ComparisonError();
+}
+
+MBigInt& MBigInt::operator+=(const MBigInt &rhs){
+    if(sign_ == rhs.sign_){
+        raw_add(reversedDigits_, rhs.reversedDigits_, reversedDigits_);
+        return *this;
+    }
+
+    if(operator>=(0) && rhs <= 0){
+        if(raw_cmp(reversedDigits_, rhs.reversedDigits_) >= 0)
+            raw_subtract(reversedDigits_, rhs.reversedDigits_, reversedDigits_);
+        else{
+            sign_ ^= 1;
+            raw_subtract(rhs.reversedDigits_, reversedDigits_, reversedDigits_);
+        }
+
+        return *this;
+    }
+    
+    if(operator<=(0) && rhs >= 0){
+        sign_ ^= 1;
+        operator-=(rhs);
+        sign_ ^= 1;
+        return *this;
+    }
+
+    throw OperatorError();
+}
+
+MBigInt& MBigInt::operator-=(const MBigInt &rhs){
+    if(sign_ == rhs.sign_){
+        if(raw_cmp(reversedDigits_, rhs.reversedDigits_) >= 0)
+            raw_subtract(reversedDigits_, rhs.reversedDigits_, reversedDigits_);
+        else{
+            raw_subtract(rhs.reversedDigits_, reversedDigits_, reversedDigits_);
+            sign_ ^= 1;
+        }
+        
+        return *this;
+    }
+
+    if(operator<=(0) && rhs >= 0){
+        raw_add(reversedDigits_, rhs.reversedDigits_, reversedDigits_);
+        return *this;
+    }
+
+    if(operator>=(0) && rhs <= 0){
+        raw_add(reversedDigits_, rhs.reversedDigits_, reversedDigits_);
+        return *this;
+    }
+
+    throw OperatorError();
 }
 
 MBigInt::operator string() const{

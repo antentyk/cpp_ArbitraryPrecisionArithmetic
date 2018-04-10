@@ -20,9 +20,16 @@ namespace ArbitraryPrecisionArithmetic{
 
     class FormatError : public std::exception{
     public:
-    const char * what() const throw(){
-        return "Wrong number format";
-    }
+        const char * what() const throw(){
+            return "Wrong number format";
+        }
+    };
+
+    class OperatorError : public std::exception{
+    public:
+        const char * what() const throw(){
+            return "Error while applying operand";
+        }
     };
 }
 

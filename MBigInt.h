@@ -26,6 +26,10 @@ namespace ArbitraryPrecisionArithmetic{
         MBigInt& operator=(const MBigInt &rhs);
 
         bool operator==(const MBigInt &rhs) const;
+        inline bool operator!=(const MBigInt &rhs) const{
+            return !(operator==(rhs));
+        }
+
         bool operator>(const MBigInt &rhs) const;
         inline bool operator>=(const MBigInt &rhs) const{
             return operator==(rhs) || operator>(rhs);
@@ -36,6 +40,9 @@ namespace ArbitraryPrecisionArithmetic{
         inline bool operator<=(const MBigInt &rhs) const{
             return !operator>(rhs);
         }
+
+        MBigInt& operator+=(const MBigInt &rhs);
+        MBigInt& operator-=(const MBigInt &rhs);
 
         inline const digitContainer& getReversedDigits() const{
             return reversedDigits_;
