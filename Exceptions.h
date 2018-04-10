@@ -31,6 +31,13 @@ namespace ArbitraryPrecisionArithmetic{
             return "Error while applying operand";
         }
     };
+
+    class DivisionByZero : public std::exception{
+    public:
+        const char * what() const throw(){
+            return "Division by zero";
+        }
+    };
 }
 
 #endif

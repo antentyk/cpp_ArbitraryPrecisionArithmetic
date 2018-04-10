@@ -21,9 +21,17 @@ namespace ArbitraryPrecisionArithmetic{
 
         explicit MBigInt(std::string representation);
         MBigInt(int number);
+        MBigInt(digit number);
         MBigInt(const MBigInt &other);
 
         MBigInt& operator=(const MBigInt &rhs);
+
+        inline MBigInt operator-() const{
+            return MBigInt(sign_ ^ 1, reversedDigits_);
+        }
+        inline MBigInt operator+() const{
+            return MBigInt(*this);
+        }
 
         bool operator==(const MBigInt &rhs) const;
         inline bool operator!=(const MBigInt &rhs) const{
@@ -46,10 +54,8 @@ namespace ArbitraryPrecisionArithmetic{
         inline MBigInt& operator*=(const MBigInt &rhs){
             return operator=(operator*(rhs));
         }
-
-
-        inline const digitContainer& getReversedDigits() const{
-            return reversedDigits_;
+        inline MBigInt& operator/=(const MBigInt &rhs){
+            return operator=(operator/(rhs));
         }
 
         operator std::string() const;
@@ -65,7 +71,11 @@ namespace ArbitraryPrecisionArithmetic{
             return result;
         }
         MBigInt operator*(const MBigInt &rhs) const;
+        MBigInt operator/(const MBigInt &rhs) const;
 
+        inline const digitContainer& getReversedDigits() const{
+            return reversedDigits_;
+        }
     private:
         MBigInt(bool sign, digitContainer reversedDigits);
 
@@ -79,7 +89,7 @@ namespace ArbitraryPrecisionArithmetic{
             return sign_;
         }
 
-        bool sign_; // 0 - positive, 1 - negative
+        bool sign_; // false - positive, true - negative
         digitContainer reversedDigits_;
     };
 

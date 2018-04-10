@@ -5,6 +5,7 @@ using std::string;
 using std::to_string;
 using std::ostream;
 using std::stringstream;
+using std::reverse;
 
 namespace
 {
@@ -250,6 +251,9 @@ MBigInt::MBigInt(string representation){
 MBigInt::MBigInt(int number):
 MBigInt(to_string(number))
 {}
+MBigInt::MBigInt(digit number):
+MBigInt(to_string(number))
+{}
 
 MBigInt::MBigInt(const MBigInt &other):
     sign_(other.sign_),
@@ -387,11 +391,15 @@ MBigInt MBigInt::operator*(const MBigInt &rhs) const{
     size_t shift = 0;
 
     for(auto lhs_digit: reversedDigits_){
+        ++shift;
+
+        if(lhs_digit == 0)
+            continue;
+
         digitContainer tmpContainer;
 
-        for(size_t i = 0; i < shift; ++i)
+        for(size_t i = 0; i < shift - 1; ++i)
             tmpContainer.push_back(0);
-        ++shift;
         
         digit memory = 0;
         digit current = 0;
@@ -409,5 +417,63 @@ MBigInt MBigInt::operator*(const MBigInt &rhs) const{
     }
 
     result.sign_ = sign_ ^ rhs.sign_;
+    return result;
+}
+
+MBigInt MBigInt::operator/(const MBigInt &rhs) const{
+    const MBigInt &l = operator<(0) ? operator-() : *this;
+    const MBigInt &r = (rhs < 0) ? -rhs : rhs;
+
+    if(r == 0)
+        throw DivisionByZero();
+    
+    if(l == 0)
+        return 0;
+    
+    digitContainer tmpContainer;
+
+    MBigInt remainder = 0;
+
+    for
+    (
+        auto itr = l.reversedDigits_.rbegin();
+        itr != l.reversedDigits_.rend();
+        ++itr
+    )
+    {
+        digit current_digit = *itr;
+
+        remainder = remainder * kBase + current_digit;
+
+        if(remainder < r){
+            tmpContainer.push_back(0);
+            continue;
+        }
+
+        digit lower = 0, upper = kBase - 1;
+
+        while(upper - lower > 1){
+            digit middle = (lower + upper) / 2;
+            if(r * middle > remainder)
+                upper = middle;
+            else
+                lower = middle;
+        }
+
+        if(r * upper <= remainder){
+            tmpContainer.push_back(upper);
+            remainder -= r * upper;
+            continue;
+        }
+        tmpContainer.push_back(lower);
+        remainder -= r * lower;
+    }
+
+    reverse(tmpContainer.begin(), tmpContainer.end());
+    MBigInt result(sign_ ^ rhs.sign_, tmpContainer);
+
+    if(sign_ ^ rhs.sign_ && remainder > 0)
+        result -= 1;
+
     return result;
 }
