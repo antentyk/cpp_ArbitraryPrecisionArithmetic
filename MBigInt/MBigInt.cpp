@@ -423,8 +423,7 @@ MBigInt MBigInt::operator*(const MBigInt &rhs) const{
 
         digitContainer tmpContainer;
 
-        for(size_t i = 0; i < shift - 1; ++i)
-            tmpContainer.push_back(0);
+        tmpContainer.resize(shift - 1, 0);
         
         digit memory = 0;
         digit current = 0;
@@ -534,11 +533,23 @@ MBigInt ArbitraryPrecisionArithmetic::pow
     if(power < 0)
         throw PowerError();
     
-    if(power == 0)
-        return 1;
-    if(power % 2 == 0)
-        return pow(number * number, power / 2);
-    return number * pow(number, power - 1);
+    MBigInt a(number);
+    MBigInt n(power);
+
+    MBigInt result = 1;
+
+    while(n > 0){
+        if(n.getReversedDigits().front() % 2 == 1){
+            result *= a;
+            --n;
+        }
+        else{
+            a *= a;
+            n /= 2;
+        }
+    }
+
+    return result;
 }
 
 MBigInt ArbitraryPrecisionArithmetic::GCD
