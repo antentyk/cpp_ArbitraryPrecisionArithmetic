@@ -5,7 +5,7 @@ It has 2 classes available:
 - <b>MBigInt</b> - arbitrary precision integer
 - <b>MRationalNumber</b> - arbitrary precision rational number
 
-<b>[MBigInt](MbigIn)</b>
+<b>[MBigInt](MbigInt)</b>
 
 What is implemented
 - constructor from string and integer, copy constructor
