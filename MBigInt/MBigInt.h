@@ -117,6 +117,12 @@ namespace ArbitraryPrecisionArithmetic{
     inline MBigInt abs(const MBigInt &number){
         return (number < 0? -number : number);
     }
+
+    // only for non-negative numbers
+    MBigInt GCD(const MBigInt &lhs, const MBigInt &rhs);
+
+    // only for non0negative numbers
+    MBigInt LCM(const MBigInt &lhs, const MBigInt &rhs);
 }
 
 #endif

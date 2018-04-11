@@ -1,5 +1,5 @@
-#ifndef EXCEPTIONS_H_
-#define EXCEPTIONS_H_
+#ifndef M_BIG_INT_EXCEPTIONS_H_
+#define M_BIG_INT_EXCEPTIONS_H_
 
 #include <exception>
 
@@ -43,6 +43,20 @@ namespace ArbitraryPrecisionArithmetic{
     public:
         const char * what() const throw(){
             return "Only non-negative powers are allowed";
+        }
+    };
+
+    class GCDError : public std::exception{
+    public:
+        const char* what() const throw(){
+            return "Number cannot be negative";
+        }
+    };
+
+    class LCMError : public std::exception{
+    public:
+        const char* what() const throw(){
+            return "Number cannot be negative";
         }
     };
 }

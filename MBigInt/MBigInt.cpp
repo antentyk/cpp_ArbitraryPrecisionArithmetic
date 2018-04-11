@@ -535,3 +535,32 @@ MBigInt ArbitraryPrecisionArithmetic::pow
         return pow(number * number, power / 2);
     return number * pow(number, power - 1);
 }
+
+MBigInt ArbitraryPrecisionArithmetic::GCD
+(
+    const MBigInt &lhs,
+    const MBigInt &rhs
+)
+{
+    if(lhs < 0 || rhs < 0)
+        throw GCDError();
+    
+    if(rhs == 0)
+        return lhs;
+    
+    return GCD(rhs, lhs % rhs);
+}
+
+MBigInt ArbitraryPrecisionArithmetic::LCM
+(
+    const MBigInt &lhs,
+    const MBigInt &rhs
+)
+{
+    if(lhs < 0 || rhs < 0)
+        throw LCMError();
+    if(lhs == 0 && rhs == 0)
+        throw LCMError();
+        
+    return (lhs / GCD(lhs, rhs)) * rhs;
+}

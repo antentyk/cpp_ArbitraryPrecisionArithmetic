@@ -89,6 +89,20 @@ int main(){
 
     cout << "abs(a) = " << abs(a) << endl;
     cout << "abs(b) = " << abs(b) << endl;
+    cout << endl;
+
+    // gcd and lcm functions
+
+    a = 15;
+    b = 10;
+
+    cout << "a = " << a << endl;
+    cout << "b = " << b << endl;
+
+    cout << "Only for non-negative a and b" << endl;
+    cout << "GCD(a, b) = " << GCD(a, b) << endl;
+    cout << "Only for non-negative a and b" << endl;
+    cout << "LCM(a, b) = " << LCM(a, b) << endl;
 
     return 0;
 }

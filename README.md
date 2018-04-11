@@ -18,6 +18,7 @@ What is implemented
 - operators += -= *= /=
 - prefix and postfix ++ and --
 - function pow(for non-negative powers) and abs
+- GCD and LCM functions
 - ostream << operator
 
 see usage example [here](MBigInt/main.cpp)
