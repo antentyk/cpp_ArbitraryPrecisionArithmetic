@@ -10,6 +10,7 @@ using std::reverse;
 namespace
 {
     int raw_cmp(const digitContainer &lhs, const digitContainer &rhs){
+        // compares unsigned MBigInt digits representations
         // -1 lhs < rhs
         // 0 lhs == rhs
         // 1 lhs > rhs
@@ -39,6 +40,8 @@ namespace
     }
 
     int digitsnum(digit number){
+        // returns amount of digits in number (needed to put leading zeros)
+        // in string representation of MBigInt
         if(number == 0)
             return 1;
         
@@ -58,6 +61,9 @@ namespace
         digitContainer &target
     )
     {
+        // performs addition of unsigned MBigInt representations
+        // target can be one of lhs or rhs
+        // (in that case it will be replaced by new digits)
         digit memory = 0;
 
         size_t
@@ -123,6 +129,10 @@ namespace
         digitContainer &target
     )
     {
+        // performs subtraction of unsigned MBigInt representations
+        // target can be one of lhs or rhs
+        // (in that case it will be replaced by new digits)
+
         // digit represented by lhs should be greater than
         // in rhs
         // otherwise the behaviour is underfined
@@ -187,6 +197,13 @@ namespace
 }
 
 MBigInt::MBigInt(string representation){
+    // throws FormatError
+    //      if representation is empty
+    //      if there are no digits characters
+    //      if there are leading zeros
+    // throws InvalidCharacter
+    //      if there is non-digit character
+    //          (apart from + or - in the beginning)
     sign_ = false;
 
     if(representation.size() == 0)
@@ -379,9 +396,12 @@ MBigInt::operator string() const{
 MBigInt::MBigInt(bool sign, digitContainer reversedDigits):
     sign_(sign)
 {
+    if(reversedDigits.size() == 0)
+        throw FormatError();
+
     while(reversedDigits.size() > 1 && reversedDigits.back() == 0)
         reversedDigits.pop_back();
-    
+
     reversedDigits_ = reversedDigits;
 }
 
@@ -430,7 +450,7 @@ MBigInt MBigInt::operator/(const MBigInt &rhs) const{
     if(l == 0)
         return 0;
     
-    digitContainer tmpContainer;
+    digitContainer fractionDigits;
 
     MBigInt remainder = 0;
 
@@ -446,7 +466,7 @@ MBigInt MBigInt::operator/(const MBigInt &rhs) const{
         remainder = remainder * kBase + current_digit;
 
         if(remainder < r){
-            tmpContainer.push_back(0);
+            fractionDigits.push_back(0);
             continue;
         }
 
@@ -461,19 +481,57 @@ MBigInt MBigInt::operator/(const MBigInt &rhs) const{
         }
 
         if(r * upper <= remainder){
-            tmpContainer.push_back(upper);
+            fractionDigits.push_back(upper);
             remainder -= r * upper;
             continue;
         }
-        tmpContainer.push_back(lower);
+        fractionDigits.push_back(lower);
         remainder -= r * lower;
     }
 
-    reverse(tmpContainer.begin(), tmpContainer.end());
-    MBigInt result(sign_ ^ rhs.sign_, tmpContainer);
+    reverse(fractionDigits.begin(), fractionDigits.end());
+    MBigInt result(sign_ ^ rhs.sign_, fractionDigits);
 
     if(sign_ ^ rhs.sign_ && remainder > 0)
         result -= 1;
 
     return result;
+}
+
+MBigInt& MBigInt::operator++(){
+    operator+=(1);
+    return *this;
+}
+
+MBigInt& MBigInt::operator--(){
+    operator-=(1);
+    return *this;
+}
+
+MBigInt MBigInt::operator++(int){
+    MBigInt result(*this);
+    ++(*this);
+    return result;
+}
+
+MBigInt MBigInt::operator--(int){
+    MBigInt result(*this);
+    --(*this);
+    return result;
+}
+
+MBigInt ArbitraryPrecisionArithmetic::pow
+(
+    const MBigInt &number,
+    const MBigInt &power
+)
+{
+    if(power < 0)
+        throw PowerError();
+    
+    if(power == 0)
+        return 1;
+    if(power % 2 == 0)
+        return pow(number * number, power / 2);
+    return number * pow(number, power - 1);
 }

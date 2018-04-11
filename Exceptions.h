@@ -38,6 +38,13 @@ namespace ArbitraryPrecisionArithmetic{
             return "Division by zero";
         }
     };
+
+    class PowerError : public std::exception{
+    public:
+        const char * what() const throw(){
+            return "Only non-negative powers are allowed";
+        }
+    };
 }
 
 #endif

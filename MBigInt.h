@@ -21,7 +21,6 @@ namespace ArbitraryPrecisionArithmetic{
 
         explicit MBigInt(std::string representation);
         MBigInt(int number);
-        MBigInt(digit number);
         MBigInt(const MBigInt &other);
 
         MBigInt& operator=(const MBigInt &rhs);
@@ -57,6 +56,9 @@ namespace ArbitraryPrecisionArithmetic{
         inline MBigInt& operator/=(const MBigInt &rhs){
             return operator=(operator/(rhs));
         }
+        inline MBigInt& operator%=(const MBigInt &rhs){
+            return operator=(operator%(rhs));
+        }
 
         operator std::string() const;
 
@@ -72,12 +74,24 @@ namespace ArbitraryPrecisionArithmetic{
         }
         MBigInt operator*(const MBigInt &rhs) const;
         MBigInt operator/(const MBigInt &rhs) const;
+        inline MBigInt operator%(const MBigInt &rhs) const{
+            // very inefficient
+            return operator-(operator/(rhs) * rhs);
+        }
+
+        MBigInt& operator++();
+        MBigInt& operator--();
+
+        MBigInt operator++(int);
+        MBigInt operator--(int);
 
         inline const digitContainer& getReversedDigits() const{
             return reversedDigits_;
         }
+
     private:
         MBigInt(bool sign, digitContainer reversedDigits);
+        MBigInt(digit number);
 
         inline bool isZero() const{
             return reversedDigits_.size() == 1 && reversedDigits_.at(0) == 0;
@@ -95,6 +109,13 @@ namespace ArbitraryPrecisionArithmetic{
 
     inline std::ostream& operator<<(std::ostream &strm, const MBigInt &instance){
         return strm << static_cast<std::string>(instance);
+    }
+
+    // only for non-negative powers
+    MBigInt pow(const MBigInt &number, const MBigInt &power);
+
+    inline MBigInt abs(const MBigInt &number){
+        return (number < 0? -number : number);
     }
 }
 
