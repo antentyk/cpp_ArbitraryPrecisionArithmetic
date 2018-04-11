@@ -2,10 +2,10 @@
 ArbitraryPrecisionArithmetic assignment during C++ course at UCU
 
 It has 2 classes available:
-    - MBigInt - arbitrary precision integer
-    - MRationalNumber - arbitrary precision rational number
+- <b>MBigInt</b> - arbitrary precision integer
+- <b>MRationalNumber</b> - arbitrary precision rational number
 
-<b>MBigInt</b>
+<b>[MBigInt](MbigIn)</b>
 
 What is implemented
 - constructor from string and integer, copy constructor
@@ -20,4 +20,4 @@ What is implemented
 - function pow(for non-negative powers) and abs
 - ostream << operator
 
-see usage example in MBigInt/main.cpp
+see usage example [here](MBigInt/main.cpp)
