@@ -19,10 +19,12 @@ int main(){
     MBigInt a("-123412341");
     MBigInt b(1);
     MBigInt c(b);
+    MBigInt d();
 
     cout << "a = " << a << endl;
     cout << "b = " << b << endl;
-    cout << "after MBigInt c(b); c = " << c << endl;
+    cout << "c = " << c << endl;
+    cout << "d = " << c << endl;
     cout << endl;
 
     // assignment operator
@@ -40,6 +42,7 @@ int main(){
     cout << endl;
 
     // comparions operators
+    // equality operators
     // ==, !=, >, <, >=, <=
 
     cout << "b == -1 is " << (b == -1? "true": "false") << endl;
@@ -86,6 +89,8 @@ int main(){
     cout << "a = " << a << endl;
     cout << "b = " << b << endl;
     cout << endl;
+
+    // abs function
 
     cout << "abs(a) = " << abs(a) << endl;
     cout << "abs(b) = " << abs(b) << endl;

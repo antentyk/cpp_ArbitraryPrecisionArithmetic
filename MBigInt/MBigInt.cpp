@@ -268,6 +268,7 @@ MBigInt::MBigInt(string representation){
 MBigInt::MBigInt(int number):
 MBigInt(to_string(number))
 {}
+
 MBigInt::MBigInt(digit number):
 MBigInt(to_string(number))
 {}
@@ -275,6 +276,10 @@ MBigInt(to_string(number))
 MBigInt::MBigInt(const MBigInt &other):
     sign_(other.sign_),
     reversedDigits_(other.reversedDigits_)
+{}
+
+MBigInt::MBigInt():
+MBigInt(0)
 {}
 
 MBigInt& MBigInt::operator=(const MBigInt &rhs){

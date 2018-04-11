@@ -22,6 +22,7 @@ namespace ArbitraryPrecisionArithmetic{
         explicit MBigInt(std::string representation);
         MBigInt(int number);
         MBigInt(const MBigInt &other);
+        MBigInt();
 
         MBigInt& operator=(const MBigInt &rhs);
 
@@ -39,7 +40,7 @@ namespace ArbitraryPrecisionArithmetic{
 
         bool operator>(const MBigInt &rhs) const;
         inline bool operator>=(const MBigInt &rhs) const{
-            return operator==(rhs) || operator>(rhs);
+            return operator>(rhs) || operator==(rhs);
         }
         inline bool operator<(const MBigInt &rhs) const{
             return !operator==(rhs) && !operator>(rhs);
@@ -121,7 +122,7 @@ namespace ArbitraryPrecisionArithmetic{
     // only for non-negative numbers
     MBigInt GCD(const MBigInt &lhs, const MBigInt &rhs);
 
-    // only for non0negative numbers
+    // only for non-negative numbers
     MBigInt LCM(const MBigInt &lhs, const MBigInt &rhs);
 }
 
