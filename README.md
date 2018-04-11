@@ -23,10 +23,10 @@ What is implemented
 
 see usage example [here](MBigInt/main.cpp)
 
-<b>[MRationalNumber](MRationalNumber)
+<b>[MRationalNumber](MRationalNumber)</b>
 
 What is implemented
-- various constructors (from 2 MBigInts, 2 integers, 1 MBigInt(numerator), 1 integer, default constructor(initializes as 0)), copy constructo
+- various constructors (from 2 MBigInts, 2 integers, 1 MBigInt(numerator), 1 integer, default constructor(initializes as 0)), copy constructor
 - assignment operator =
 - unary - and + operators
 - equality operators == and !=
