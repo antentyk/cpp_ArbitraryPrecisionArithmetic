@@ -20,4 +20,5 @@ add_executable(
     MRationalNumber/MRationalNumber.cpp
     MBigInt/MBigInt.h
     MBigInt/MBigInt.cpp
+    MBigInt/Exceptions.h
 )
