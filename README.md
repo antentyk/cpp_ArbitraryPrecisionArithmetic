@@ -8,34 +8,34 @@ It has 2 classes available:
 <b>[MBigInt](MBigInt)</b>
 
 What is implemented
-- constructor from string and integer, default constructor(initializes 0 value), copy constructor
-- assignment operator =
-- unary - and + operators
-- equality operators == and !=
-- comparison operators > < >= <=
-- casting to std::string
-- operators + - * / %
-- operators += -= *= /= %=
-- prefix and postfix ++ and --
-- function pow(for non-negative powers) and abs
-- GCD and LCM functions
-- ostream << operator
+- constructor from <b>string</b> and <b>integer</b>, <b>default</b> constructor(initializes 0 value), <b>copy</b> constructor
+- assignment operator <b>=</b>
+- unary <b>-</b> and <b>+</b> operators
+- equality operators <b>==</b> and <b>!=</b>
+- comparison operators <b>> < >= <=</b>
+- casting to <b>std::string</b>
+- operators <b>+ - * / %</b>
+- operators <b>+= -= *= /= %=</b>
+- prefix and postfix <b>++</b> and <b>--</b>
+- function <b>pow</b>(for non-negative powers) and <b>abs</b>
+- <b>GCD</b> and <b>LCM</b> functions
+- ostream <b><<</b> operator
 
 see usage example [here](MBigInt/main.cpp)
 
 <b>[MRationalNumber](MRationalNumber)</b>
 
 What is implemented
-- various constructors (from 2 MBigInts, 2 integers, 1 MBigInt(numerator), 1 integer, default constructor(initializes as 0)), copy constructor
-- assignment operator =
-- unary - and + operators
-- equality operators == and !=
-- comparison operators > < >= <=
-- casting to std::string
-- operators + - * /
-- operators += -= *= /=
-- prefix and postfix ++ and --
-- function pow(for non-negative powers) and abs
-- ostream << operator
+- various constructors (from <b>2 MBigInts</b>, <b>2 integers</b>, <b>1 MBigInt</b>(numerator), <b>1 integer</b>, <b>default</b> constructor(initializes as 0)), <b>copy</b> constructor
+- assignment operator <b>=</b>
+- unary <b>-</b> and <b>+</b> operators
+- equality operators <b>==</b> and <b>!=</b>
+- comparison operators <b>> < >= <=</b>
+- casting to <b>std::string</b>
+- operators <b>+ - * /</b>
+- operators <b>+= -= *= /=</b>
+- prefix and postfix <b>++</b> and <b>--</b>
+- function <b>pow</b>(for non-negative powers) and <b>abs</b>
+- ostream <b><<</b> operator
 
 see usage example [here](MRationalNumber/main.cpp)
