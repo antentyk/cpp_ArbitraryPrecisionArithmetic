@@ -1,5 +1,3 @@
 .vscode/
-MBigInt/Debug/
-MBigInt/Release/
-MRationalNumber/Debug/
-MRationalNumber/Release/
+/Debug
+/Release

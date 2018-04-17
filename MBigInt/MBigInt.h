@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 #include <ostream>
-#include <sstream>
-#include <algorithm>
 
 #include "Exceptions.h"
 

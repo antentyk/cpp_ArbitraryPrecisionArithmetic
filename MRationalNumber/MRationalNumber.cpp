@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "MRationalNumber.h"
 
 using namespace ArbitraryPrecisionArithmetic;

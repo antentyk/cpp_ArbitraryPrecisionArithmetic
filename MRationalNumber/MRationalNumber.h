@@ -1,10 +1,9 @@
 #ifndef M_RATIONAL_NUMBER_H_
 #define M_RATIONAL_NUMBER_H_
 
+#include <vector>
 #include <string>
 #include <ostream>
-#include <algorithm>
-#include <vector>
 
 #include "Exceptions.h"
 #include "../MBigInt/MBigInt.h"

@@ -1,3 +1,6 @@
+#include <sstream>
+#include <algorithm>
+
 #include "MBigInt.h"
 
 using namespace ArbitraryPrecisionArithmetic;
