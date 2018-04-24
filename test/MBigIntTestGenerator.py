@@ -4,7 +4,7 @@
 import random
 import os
 
-EXPERIMENTS_NUM_SMALL = int(1e2)
+EXPERIMENTS_NUM_SMALL = int(1e4)
 EXPERIMENTS_NUM_BIG = int(1e4)
 
 UPPER_BOUND_SMALL = int(1e2)
@@ -27,11 +27,7 @@ binaryOperatorsNames = [
     "Multiplication",
     "Division",
     "Equal",
-    "NotEqual",
     "Gt",
-    "Lt",
-    "GtEq",
-    "LtEq",
     "Modulus"
 ]
 
@@ -41,11 +37,7 @@ binaryOperatorfunctions = [
     lambda a, b: a * b,
     lambda a, b: a // b,
     lambda a, b: a == b,
-    lambda a, b: a != b,
     lambda a, b: a > b,
-    lambda a, b: a < b,
-    lambda a, b: a >= b,
-    lambda a, b: a <= b,
     lambda a, b: a % b,
 ]
 
