@@ -28,7 +28,7 @@ binaryOperatorsNames = [
     "Division",
     "Equal",
     "Gt",
-    "Modulus"
+    "Modulo"
 ]
 
 binaryOperatorfunctions = [
@@ -78,15 +78,11 @@ for ni, name in enumerate(binaryOperatorsNames):
 
 # generating samples for unary operators
 unaryOperatorNames = [
-    "UnaryPlus",
     "UnaryMinus",
-    "Abs"
 ]
 
 unaryOperatorFunctions = [
-    lambda a: a,
-    lambda a: -a,
-    lambda a: abs(a)
+    lambda a: -a
 ]
 
 for ni, name in enumerate(unaryOperatorNames):
@@ -120,13 +116,13 @@ for ni, name in enumerate(unaryOperatorNames):
 
     fd.close()
 
-# generating samples for casting to string operator
-if(os.path.isfile("StringCasting.txt")):
-    print("Detected test for string casting")
+# generating a lot of random samples
+if(os.path.isfile("Random.txt")):
+    print("Detected random")
 else:
-    print("Writing tests for string casting")
+    print("Writing random")
 
-    fd = open("StringCasting.txt", "w", encoding="utf-8")
+    fd = open("Random.txt", "w", encoding="utf-8")
 
     for i in range(EXPERIMENTS_NUM_SMALL):
         a = random.randint(LOWER_BOUND_SMALL, UPPER_BOUND_SMALL)
@@ -153,7 +149,7 @@ else:
         try:
             c = a ** b
             s = str(a) + " " + str(b) + " " + str(c) + "\n"
-            fd.write(c)
+            fd.write(s)
         except:
             continue
 
@@ -164,7 +160,7 @@ else:
         try:
             c = a ** b
             s = str(a) + " " + str(b) + " " + str(c) + "\n"
-            fd.write(c)
+            fd.write(s)
         except:
             continue
 

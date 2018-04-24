@@ -1,0 +1,40 @@
+[==========] Running 16 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 16 tests from MBigInt
+[ RUN      ] MBigInt.Initialization
+[       OK ] MBigInt.Initialization (19 ms)
+[ RUN      ] MBigInt.StringRepresentation
+[       OK ] MBigInt.StringRepresentation (179 ms)
+[ RUN      ] MBigInt.CopyConstructor
+[       OK ] MBigInt.CopyConstructor (188 ms)
+[ RUN      ] MBigInt.EqualityOperators
+[       OK ] MBigInt.EqualityOperators (218 ms)
+[ RUN      ] MBigInt.Assignment
+[       OK ] MBigInt.Assignment (344 ms)
+[ RUN      ] MBigInt.IstreamOperator
+[       OK ] MBigInt.IstreamOperator (245 ms)
+[ RUN      ] MBigInt.OstreamOperator
+[       OK ] MBigInt.OstreamOperator (314 ms)
+[ RUN      ] MBigInt.ComparisonOperators
+[       OK ] MBigInt.ComparisonOperators (252 ms)
+[ RUN      ] MBigInt.UnaryOperators
+[       OK ] MBigInt.UnaryOperators (243 ms)
+[ RUN      ] MBigInt.Abs
+[       OK ] MBigInt.Abs (163 ms)
+[ RUN      ] MBigInt.Addition
+[       OK ] MBigInt.Addition (524 ms)
+[ RUN      ] MBigInt.Subtraction
+[       OK ] MBigInt.Subtraction (513 ms)
+[ RUN      ] MBigInt.Multiplication
+[       OK ] MBigInt.Multiplication (1799 ms)
+[ RUN      ] MBigInt.Division
+[       OK ] MBigInt.Division (16920 ms)
+[ RUN      ] MBigInt.Modulo
+[       OK ] MBigInt.Modulo (17223 ms)
+[ RUN      ] MBigInt.Power
+[       OK ] MBigInt.Power (319477 ms)
+[----------] 16 tests from MBigInt (358623 ms total)
+
+[----------] Global test environment tear-down
+[==========] 16 tests from 1 test case ran. (358624 ms total)
+[  PASSED  ] 16 tests.

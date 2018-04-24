@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include <ostream>
+#include <iostream>
 
 #include "Exceptions.h"
 
@@ -109,6 +109,7 @@ namespace ArbitraryPrecisionArithmetic{
     inline std::ostream& operator<<(std::ostream &strm, const MBigInt &instance){
         return strm << static_cast<std::string>(instance);
     }
+    std::istream& operator>>(std::istream &strm, MBigInt &instance);
 
     // only for non-negative powers
     MBigInt pow(const MBigInt &number, const MBigInt &power);

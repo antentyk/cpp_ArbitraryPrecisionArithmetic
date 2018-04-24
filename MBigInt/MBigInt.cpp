@@ -7,6 +7,7 @@ using namespace ArbitraryPrecisionArithmetic;
 using std::string;
 using std::to_string;
 using std::ostream;
+using std::istream;
 using std::stringstream;
 using std::reverse;
 
@@ -582,4 +583,17 @@ MBigInt ArbitraryPrecisionArithmetic::LCM
         throw LCMError();
         
     return (lhs / GCD(lhs, rhs)) * rhs;
+}
+
+istream& ArbitraryPrecisionArithmetic::operator>>(
+    istream& strm,
+    MBigInt& instance
+)
+{
+    string representation;
+    strm >> representation;
+
+    instance = MBigInt(representation);
+
+    return strm;
 }
